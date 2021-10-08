@@ -11,38 +11,14 @@ import GeneticAlgorithm
 from Chromossome import Chromossome
 
 
-def readFile(filename):
-    file = open(filename + ".txt", "r")
-    arr = []
-    for line in file:
-        temp = line.split()
-        arr.append(temp)
-
-    return np.array(arr)
 
 
-
-
-# Be sure to seed your random number generator.
-def generateInitialPopulation():
-    return 0
-
-
-def fitnessScore(chromossome):
-    return chromossome.getThird();
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    data = readFile("genAlgData1.txt")
-    print(data)
+    geneticAlgo = GeneticAlgorithm.GeneticAlgorithm()
+    geneticAlgo.runTest()
 
-    x = Chromossome()
-    x.printGenes()
-
-    # for list in data:
-    #     print(list[0] + " in range: " + str(x.checkFirst(float(list[0]))))
-
-    x.getFitnessScore(data)
 
 
 

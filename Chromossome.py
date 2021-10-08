@@ -32,20 +32,36 @@ class Chromossome:
     # •The second number represents the percentage price change on the following day.
     # •The third number represents the profit in dollars that you would have made if you had bought an ETF
     #       of the stock market index and held it for one day (negative numbers represent losing money).
-    def __init__(self):
+    def __init__(self, data):
         (one, two) = generateRange()
         three, four = generateRange()
         five = generateBuySell()
 
         self.genes = [one, two, three, four, five]
+        self.fitnessScore = self.fitnessScore(data)
+
+    # Override < operator
+    def __lt__(self, other):
+        # print(str(self.fitnessScore) + " < "  + str(other.fitnessScore))
+        # print(str(self.fitnessScore < other.fitnessScore))
+        return self.fitnessScore < other.fitnessScore
 
     def printGenes(self):
         print(self.genes)
 
+    # getter
+    def getFirst(self, num):
+        return self.genes[num]
+
     def getFifth(self):
         return self.genes[-1]
 
-    def getFitnessScore(self, arr):
+    # setter
+    def setGene(self, num, newGene):
+        self.genes[num] = newGene
+        print(self.genes[num])
+
+    def fitnessScore(self, arr):
         # if no data matches with fitness test, return -5000 as fitness score.
         score = 0;
 
@@ -61,10 +77,12 @@ class Chromossome:
 
         print("- fitness score: " + str(score))
 
-        # if score == 0:
-        #     return -5000
-        # else:
-        return score
+        self.fitnessScore = score
+        return self.fitnessScore
+
+
+    def getFitnessScore(self):
+        return self.fitnessScore
 
     def checkFirst(self, first):
         return self.genes[0] < first < self.genes[1]
@@ -72,3 +90,5 @@ class Chromossome:
     def checkSecond(self, second):
         return self.genes[2] < second < self.genes[3]
 
+    #def swapFirstRange
+    #def swapSecondRange
