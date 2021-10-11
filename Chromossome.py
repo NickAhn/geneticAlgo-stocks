@@ -37,6 +37,7 @@ class Chromossome:
         three, four = generateRange()
         five = generateBuySell()
 
+        self.data = data;
         self.genes = [one, two, three, four, five]
         self.fitnessScore = self.fitnessScore(data)
 
@@ -50,8 +51,8 @@ class Chromossome:
         print(self.genes)
 
     # getter
-    def getFirst(self, num):
-        return self.genes[num]
+    # def getFirst(self, num):
+    #     return self.genes[num]
 
     def getFifth(self):
         return self.genes[-1]
@@ -59,8 +60,15 @@ class Chromossome:
     # setter
     def setGene(self, num, newGene):
         self.genes[num] = newGene
-        print(self.genes[num])
 
+    def getGene(self, num):
+        # print("Getting gene " + num)
+        return self.genes[num]
+
+    def getData(self):
+        return self.data
+
+    # Get Chromossome's fitness score
     def fitnessScore(self, arr):
         # if no data matches with fitness test, return -5000 as fitness score.
         score = 0;
@@ -75,8 +83,6 @@ class Chromossome:
                 else:
                     score = score + float(list[2])
 
-        print("- fitness score: " + str(score))
-
         self.fitnessScore = score
         return self.fitnessScore
 
@@ -89,6 +95,21 @@ class Chromossome:
 
     def checkSecond(self, second):
         return self.genes[2] < second < self.genes[3]
+
+    # Swap ranges if they are out of order. Used when crossing over parents to create offsprings
+    def fixRanges(self):
+        if self.genes[0] > self.genes[1]:
+            temp = self.genes[0]
+            self.genes[0] = self.genes[1]
+            self.genes[1] = temp
+
+        if self.genes[2] > self.genes[3]:
+            temp = self.genes[2]
+            self.genes[3] = self.genes[2]
+            self.genes[2] = temp
+
+
+
 
     #def swapFirstRange
     #def swapSecondRange

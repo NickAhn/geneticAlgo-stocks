@@ -1,4 +1,4 @@
-from random import random
+import random
 
 import numpy as np
 
@@ -28,6 +28,7 @@ def validate_numeric(value_string, numeric_type=int):
         raise
 
 
+# Generate Initial Population of Chromossomes
 def generateChromossomes(PopulationSize, data):
     chromossomeList = []
     for count in range(PopulationSize):
@@ -48,11 +49,54 @@ def elitistSelection(chromossomeList, numOfSelectedChromossomes):
     return selectedChromossomes
 
 
+# Iterate over each of the 5 genes and randomly select whether to use the value
+# from the first parent chromosome or the second parent chromosome
+# Input: parents = array of chromossomes
+def crossoverUniform(parents, offspringSize):
+    temp = parents.copy()
+    # arraySize = len(temp)
+    # for parent in parents:
+    #     temp.append(parent)
+    for x in range(offspringSize):
+        # randomly select parent one and two for crossover
+        print("-- picking crossover: --")
+        rand1 = random.randrange(len(parents))
+        rand2 = random.randrange(len(parents))
+        print(rand1)
+        print(rand2)
 
+
+        # parentOne = parents[random.randrange(len(parents))]
+        # parentTwo = parents[random.randrange(len(parents))]
+
+        parentOne = parents[rand1]
+        parentTwo = parents[rand2]
+
+        # add offspring born from the crossover of parentOne and parentTwo
+        temp.append(uniformUtil(parentOne, parentTwo))
+
+    return temp
+
+
+# input: Two Chromossomes
+# output: single chromossome with random genes from parents
+def uniformUtil(one, two):
+    temp = one
+    for x in range(5):
+        prob = random.uniform(0, 1)
+        # 50/50 probability of choosing gene 2
+        if random.randint(0, 1) == 1:
+            print("--parente2")
+            # newGene = one.getGene(x)
+            temp.setGene(x, two.getGene(x))
+
+    temp.fixRanges()
+    temp.printGenes()
+    return temp
 
 
 class GeneticAlgorithm:
-    chromossomes = []
+    # chromossomes = []
 
     # should be controllable:
     #   - fineName
@@ -96,13 +140,29 @@ class GeneticAlgorithm:
     def runTest(self):
         self.file = readFile("genAlgData1")
 
-        populationSize = 4;
-        self.chromossomes = generateChromossomes(4, self.file)
+        populationSize = 8;
+        self.chromossomes = generateChromossomes(populationSize, self.file)
 
-        self.numOfSelectedChromossomes = 2;
+        self.numOfSelectedChromossomes = 4;
 
         selectionType = "Elitist"
 
-        nextGen = elitistSelection(self.chromossomes, self.numOfSelectedChromossomes)
+        print("\n-- ELITIST SELECTION --")
+        # array of chromossomes
+        parents = elitistSelection(self.chromossomes, self.numOfSelectedChromossomes)
+        for x in range(len(parents)):
+            parents[x].printGenes()
+
+        offspringSize = populationSize - self.numOfSelectedChromossomes
+
+        print("\n-- UNIFORM CROSSOVER --")
+        #uniform Crossover
+        nextGen = crossoverUniform(parents, offspringSize)
+
+        print("\n Next gen: ")
+        # print(len(nextGen))
+        for x in range(len(nextGen)):
+            nextGen[x].printGenes()
+
 
 
