@@ -3,11 +3,17 @@ import numpy as np
 
 
 # output: tuple (x, y) where x < y.
+# WHAT IF: get rif of ifs, or the function itself.
+# make function return a singel random number from normal distribution
+# then use the helper method to swaps in place.
 def generateRange():
-    mu, sigma = 0.0, 1.5
+    # mu, sigma = 0.0, 1.5
+    #
+    # x = np.random.normal(mu, sigma)
+    # y = np.random.normal(mu, sigma)
 
-    x = np.random.normal(0.0, 1.5)
-    y = np.random.normal(0.0, 1.5)
+    x = generateRandomGene()
+    y = generateRandomGene()
 
     # if x<y, x is lower bound and y is upper bound
     if x < y:
@@ -24,6 +30,11 @@ def generateBuySell():
         return 0
     else:
         return 1
+
+def generateRandomGene():
+    mu, sigma = 0.0, 1.5
+
+    return np.random.normal(mu, sigma)
 
 
 class Chromossome:
@@ -108,7 +119,14 @@ class Chromossome:
             self.genes[3] = self.genes[2]
             self.genes[2] = temp
 
+    # input: int gene to be mutated
+    def mutateGene(self, gene):
+        if gene == 4:
+            self.setGene(4, generateBuySell())
+        else:
+            self.setGene(gene, generateRandomGene())
 
+        self.fixRanges()
 
 
     #def swapFirstRange

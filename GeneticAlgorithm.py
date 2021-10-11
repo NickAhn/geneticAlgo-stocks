@@ -95,6 +95,18 @@ def uniformUtil(one, two):
     return temp
 
 
+# Iterate through each gene of each chromossome and mutate gene with a X probability.
+# input: list of Chromossomes, probability
+
+# The initial mutation rate and how much to change the mutation rate each generation
+# – it should be possible to have a fixed mutation rate or to have a mutation rate that gradually decrease
+def mutate(chromossomes, prob):
+    for x in range(len(chromossomes)):
+        for gene in range(5):
+            if random.random() <= prob:
+                chromossomes[x].mutateGene(gene)
+
+
 class GeneticAlgorithm:
     # chromossomes = []
 
@@ -164,5 +176,7 @@ class GeneticAlgorithm:
         for x in range(len(nextGen)):
             nextGen[x].printGenes()
 
+        print("\n-- MUTATION --")
+        mutate(nextGen, 0.1)
 
 
