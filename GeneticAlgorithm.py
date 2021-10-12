@@ -49,6 +49,7 @@ def elitistSelection(chromossomeList, numOfSelectedChromossomes):
 
     return selectedChromossomes
 
+
 def tournamentSelection(chromossomeList, numOfSelectedChromossomes):
     selectedChromossomes = []
     for x in range(numOfSelectedChromossomes):
@@ -63,32 +64,39 @@ def tournamentSelection(chromossomeList, numOfSelectedChromossomes):
     return selectedChromossomes
 
 
-
 # Iterate over each of the 5 genes and randomly select whether to use the value
 # from the first parent chromosome or the second parent chromosome
 # Input: parents = array of chromossomes
 def crossoverUniform(parents, offspringSize):
     temp = parents.copy()
-    # arraySize = len(temp)
-    # for parent in parents:
-    #     temp.append(parent)
+
     for x in range(offspringSize):
         # randomly select parent one and two for crossover
-        # print("-- picking crossover: --")
         rand1 = random.randrange(len(parents))
         rand2 = random.randrange(len(parents))
-        # print(rand1)
-        # print(rand2)
-
-
-        # parentOne = parents[random.randrange(len(parents))]
-        # parentTwo = parents[random.randrange(len(parents))]
 
         parentOne = parents[rand1]
         parentTwo = parents[rand2]
 
-        # add offspring born from the crossover of parentOne and parentTwo
         temp.append(uniformUtil(parentOne, parentTwo))
+
+    return temp
+
+# Take the first 2 genes from the first parent chromosome and the last 3 genes
+# from the second parent chromosome to form a child chromosome.
+# In this case you don’t need to worry about creating an invalid chromosome.
+def crossoverOnePoint(parents, offspringSize):
+    temp = parents.copy()
+
+    for x in range(offspringSize):
+        parentOne = parents[random.randrange(len(parents))]
+        parentTwo = parents[random.randrange(len(parents))]
+
+        for gene in range(2, 5):
+            parentOne.setGene(gene, parentTwo.getGene(gene))
+            parentOne.printGenes()
+
+        temp.append(parentOne)
 
     return temp
 
@@ -182,7 +190,10 @@ class GeneticAlgorithm:
 
         print("\n-- UNIFORM CROSSOVER --")
         #uniform Crossover
-        nextGen = crossoverUniform(parents, offspringSize)
+        # nextGen = crossoverUniform(parents, offspringSize)
+
+        #one point crossover
+        nextGen = crossoverOnePoint(parents, offspringSize)
 
         print("\n Next gen: ")
         # print(len(nextGen))

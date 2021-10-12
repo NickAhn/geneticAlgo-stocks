@@ -61,13 +61,6 @@ class Chromossome:
     def printGenes(self):
         print(self.genes)
 
-    # getter
-    # def getFirst(self, num):
-    #     return self.genes[num]
-
-    def getFifth(self):
-        return self.genes[-1]
-
     # setter
     def setGene(self, num, newGene):
         self.genes[num] = newGene
