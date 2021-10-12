@@ -1,7 +1,7 @@
 import random
 
 import numpy as np
-from pip._internal.utils.misc import enum
+
 
 from Chromossome import Chromossome
 
@@ -38,7 +38,7 @@ def generateChromossomes(PopulationSize, data):
     return np.array(chromossomeList)
 
 
-# Output: array of Chromossomes selected through Elitist Algorithm
+# Output: array of Chromossomes selected through Elitist Selection Algorithm
 def elitistSelection(chromossomeList, numOfSelectedChromossomes):
     list = chromossomeList.copy()
     sortedChromossomes = sorted(list, reverse=True)
@@ -50,6 +50,7 @@ def elitistSelection(chromossomeList, numOfSelectedChromossomes):
     return selectedChromossomes
 
 
+# Output: array of Chromossomes selected through Tournament Selection Algorithm
 def tournamentSelection(chromossomeList, numOfSelectedChromossomes):
     selectedChromossomes = []
     for x in range(numOfSelectedChromossomes):
@@ -61,12 +62,14 @@ def tournamentSelection(chromossomeList, numOfSelectedChromossomes):
         else:
             selectedChromossomes.append(randChromossome[1])
 
+        # selectedChromossomes = sorted(selectedChromossomes, reverse=True)
+
     return selectedChromossomes
 
 
 # Iterate over each of the 5 genes and randomly select whether to use the value
 # from the first parent chromosome or the second parent chromosome
-# Input: parents = array of chromossomes
+# Input: parents = array of Chromossomes
 def crossoverUniform(parents, offspringSize):
     temp = parents.copy()
 
@@ -82,6 +85,7 @@ def crossoverUniform(parents, offspringSize):
 
     return temp
 
+
 # Take the first 2 genes from the first parent chromosome and the last 3 genes
 # from the second parent chromosome to form a child chromosome.
 # In this case you don’t need to worry about creating an invalid chromosome.
@@ -94,7 +98,7 @@ def crossoverOnePoint(parents, offspringSize):
 
         for gene in range(2, 5):
             parentOne.setGene(gene, parentTwo.getGene(gene))
-            parentOne.printGenes()
+            # parentOne.printGenes()
 
         temp.append(parentOne)
 
@@ -132,13 +136,14 @@ def mutate(chromossomes, prob):
 
 # print the Max Min and Median fitness scores every 10 runs
 def printMaxMinAvg(population, runs):
+    sortedPopulation = sorted(population, reverse=True)
     if runs % 10 == 0:
         #finding max:
         print("\n--- Max, Min and Median Fitness Scores after " + str(runs) + " runs ---")
-        print(" Max fitness score: " + str(population[0].getFitnessScore()))
-        print(" Min fitness score: " + str(population[-1].getFitnessScore()))
+        print(" Max fitness score: " + str(sortedPopulation[0].getFitnessScore()))
+        print(" Min fitness score: " + str(sortedPopulation[-1].getFitnessScore()))
 
-        center = np.take(population, len(population)/2)
+        center = np.take(population, len(sortedPopulation)/2)
         print(" Median fitness score: " + str(center.getFitnessScore()))
 
 class GeneticAlgorithm:
@@ -234,11 +239,23 @@ class GeneticAlgorithm:
                 break
 
         self.popSize = int(popSize)
+
         #generating initial population
         initialPop = generateChromossomes(self.popSize, self.file)
 
         # asking for number of selected chromossomes:int
-        self.numOfSelectedChromossomes = int(input("How many Chromossomes should be selected to the next generation?"))
+        while True:
+            x = input("How many Chromossomes should be selected to the next generation?")
+            try:
+                result = validate_numeric(x, int)
+            except ValueError:
+                print("You did not input a number, try again.")
+                continue
+            else:
+                break
+
+        self.numOfSelectedChromossomes = int(x)
+        # self.numOfSelectedChromossomes = int(input("How many Chromossomes should be selected to the next generation?"))
 
         # Ask for how many runs before the program should terminate
         self.totalRuns = int(input("how many runs before the program should terminate?"))
@@ -249,7 +266,7 @@ class GeneticAlgorithm:
         # self.selectionProb = input("What should be the ")  this is numOfSelectedChromossomes
 
         #Asking for crossover Type
-        self.crossoverType = int(input("What should be the crossover type be? Uniform [1]"))
+        self.crossoverType = int(input("What type of Crossover do you want? Uniform [1] One-Point [2]"))
 
 
         #Mutation Rate
@@ -285,6 +302,9 @@ class GeneticAlgorithm:
         if self.selectionType == 1:
             # list of Chromossomes selected by Elitist selection
             parents = elitistSelection(population, self.numOfSelectedChromossomes)
+        else:
+            # list of Chromossomes selected by Tournament selection
+            parents = tournamentSelection(population, self.numOfSelectedChromossomes)
 
         # number of offsprings to be created
         offspringSize = self.popSize - self.numOfSelectedChromossomes
@@ -293,6 +313,8 @@ class GeneticAlgorithm:
         #list containing the parent Chromossomes and offsprings
         if self.crossoverType == 1:
             nextGen = crossoverUniform(parents, offspringSize)
+        else:
+            nextGen = crossoverOnePoint(parents, offspringSize)
 
         ## Step 3: Mutation
         mutate(nextGen, mutationProb)
