@@ -38,7 +38,7 @@ def generateChromossomes(PopulationSize, data):
     return np.array(chromossomeList)
 
 
-# output: array of Chromossomes selected through Elitist Algorithm
+# Output: array of Chromossomes selected through Elitist Algorithm
 def elitistSelection(chromossomeList, numOfSelectedChromossomes):
     list = chromossomeList.copy()
     sortedChromossomes = sorted(list, reverse=True)
@@ -48,6 +48,20 @@ def elitistSelection(chromossomeList, numOfSelectedChromossomes):
         selectedChromossomes.append(sortedChromossomes[x])
 
     return selectedChromossomes
+
+def tournamentSelection(chromossomeList, numOfSelectedChromossomes):
+    selectedChromossomes = []
+    for x in range(numOfSelectedChromossomes):
+        #tuple of random chromossomes:
+        randChromossome = (chromossomeList[random.randrange(len(chromossomeList))],
+                           chromossomeList[random.randrange(len(chromossomeList))])
+        if randChromossome[0].getFitnessScore() > randChromossome[1].getFitnessScore():
+            selectedChromossomes.append(randChromossome[0])
+        else:
+            selectedChromossomes.append(randChromossome[1])
+
+    return selectedChromossomes
+
 
 
 # Iterate over each of the 5 genes and randomly select whether to use the value
@@ -145,14 +159,22 @@ class GeneticAlgorithm:
 
         populationSize = 8;
         self.chromossomes = generateChromossomes(populationSize, self.file)
+        for x in range(len(self.chromossomes)):
+            self.chromossomes[x].printGenes()
 
         self.numOfSelectedChromossomes = 4;
 
         selectionType = "Elitist"
 
-        print("\n-- ELITIST SELECTION --")
-        # array of chromossomes
-        parents = elitistSelection(self.chromossomes, self.numOfSelectedChromossomes)
+        # print("\n-- ELITIST SELECTION --")
+        # # array of chromossomes
+        # parents = elitistSelection(self.chromossomes, self.numOfSelectedChromossomes)
+        # for x in range(len(parents)):
+        #     parents[x].printGenes()
+
+        print("\n-- TOURNAMENT SELECTION --")
+        # list of chromossomes
+        parents = tournamentSelection(self.chromossomes, self.numOfSelectedChromossomes)
         for x in range(len(parents)):
             parents[x].printGenes()
 

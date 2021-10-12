@@ -18,7 +18,7 @@ from Chromossome import Chromossome
 if __name__ == '__main__':
 
     geneticAlgo = GeneticAlgorithm.GeneticAlgorithm()
-    geneticAlgo.run();
+    geneticAlgo.runTest();
 
 
 
