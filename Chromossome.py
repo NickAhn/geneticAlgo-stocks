@@ -35,7 +35,7 @@ def generateRandomGene():
     mu, sigma = 0.0, 1.5
 
     #seed random number generator
-    np.random.seed(0)
+    # np.random.seed(0)
     return np.random.normal(mu, sigma)
 
 

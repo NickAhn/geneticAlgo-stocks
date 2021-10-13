@@ -1,22 +1,6 @@
 -0.12 -0.81 -6.80
 -0.81  -0.41 5.20
-
-
-
-    # def getSecond(self):
-    #     return self.genes[1]
-    #
-    # def getThird(self):
-    #     return self.genes[2]
-    #
-    # def getFourth(self):
-    #     return self.genes[3]
-
-#k point
-def crossover(nextGen, populationSize):
-    left = len(nextGen) - populationSize
-    #get 2 random chromossomes
-    parentOne = nextGen[random.uniform(0, len(nextGen))]
-    parentTwo = nextGen[random.uniform(0, len(nextGen))]
-
-    pass
+3.00 -2.25 8.00
+1.02 0.54 4.03
+4.23 -2.00 -2.30
+-1.25 1.30 4.00

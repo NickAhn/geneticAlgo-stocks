@@ -10,7 +10,7 @@ def readFile(fileName):
     try:
         file = open(fileName + ".txt", "r")
     except OSError:
-        print("Could not open/read file: " + fileName)
+        print("- Could not open/read file: " + fileName)
         return None
 
     arr = []
@@ -37,7 +37,7 @@ def generateChromossomes(PopulationSize, data):
 
     return np.array(chromossomeList)
 
-
+# randomly pair chromossomes and select the "winners" of the tournament
 # Output: array of Chromossomes selected through Elitist Selection Algorithm
 def elitistSelection(chromossomeList, numOfSelectedChromossomes):
     list = chromossomeList.copy()
@@ -49,7 +49,7 @@ def elitistSelection(chromossomeList, numOfSelectedChromossomes):
 
     return selectedChromossomes
 
-
+# select the top X chromossomes of population
 # Output: array of Chromossomes selected through Tournament Selection Algorithm
 def tournamentSelection(chromossomeList, numOfSelectedChromossomes):
     selectedChromossomes = []
@@ -233,7 +233,7 @@ class GeneticAlgorithm:
             try:
                 result = validate_numeric(popSize, int)
             except ValueError:
-                print("You did not input a number, try again.")
+                print("- You did not input a number, try again.")
                 continue
             else:
                 break
@@ -245,11 +245,11 @@ class GeneticAlgorithm:
 
         # asking for number of selected chromossomes:int
         while True:
-            x = input("How many Chromossomes should be selected to the next generation?")
+            x = input("How many Chromossomes should be selected to the next generation? ")
             try:
                 result = validate_numeric(x, int)
             except ValueError:
-                print("You did not input a number, try again.")
+                print("- You did not input a number, try again.")
                 continue
             else:
                 break
@@ -258,22 +258,22 @@ class GeneticAlgorithm:
         # self.numOfSelectedChromossomes = int(input("How many Chromossomes should be selected to the next generation?"))
 
         # Ask for how many runs before the program should terminate
-        self.totalRuns = int(input("how many runs before the program should terminate?"))
+        self.totalRuns = int(input("how many runs before the program should terminate? "))
 
         # asking selection type and prob:String
-        self.selectionType = int(input("What type of selection do you want? Elitist [1] or Tournament [2]"))
+        self.selectionType = int(input("What type of selection do you want? Elitist [1] or Tournament [2] "))
 
         # self.selectionProb = input("What should be the ")  this is numOfSelectedChromossomes
 
         #Asking for crossover Type
-        self.crossoverType = int(input("What type of Crossover do you want? Uniform [1] One-Point [2]"))
+        self.crossoverType = int(input("What type of Crossover do you want? Uniform [1] One-Point [2] "))
 
 
         #Mutation Rate
         mutationProb = 0.1
 
         #Ask if there should be decreasae in mutation rate
-        foo = input("Would you like a flat mutation rate [1] or a gradual decrease [2]?")
+        foo = input("Would you like a flat mutation rate [1] or a gradual decrease [2]? ")
         if foo == 1:
             self.mutationVariation = False
         else:
@@ -319,7 +319,7 @@ class GeneticAlgorithm:
         ## Step 3: Mutation
         mutate(nextGen, mutationProb)
         if self.mutationVariation is True:
-            mutationProb = mutationProb - (mutationProb*0.10)
+            mutationProb = mutationProb - (mutationProb*0.90)
 
         mutate(nextGen, mutationProb)
 
