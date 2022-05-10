@@ -1,4 +1,4 @@
-**Project2: Genetic Algorithm**
+**Program to suggest buying/selling a stock based off of past 30 years of data of the S&P 500 using Genetic Algorithms**
 
 Running the program:
 * Run main.py
